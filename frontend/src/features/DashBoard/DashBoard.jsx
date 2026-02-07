@@ -48,10 +48,18 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+    <div 
+      className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50/50 flex flex-col"
+      style={{ fontFamily: '"Fraunces", "Times New Roman", serif' }}
+    >
+      {/* Premium decorative background elements - subtle and sophisticated */}
+      <div className="fixed -top-96 -right-48 w-96 h-96 rounded-full bg-amber-200/20 blur-3xl -z-10" />
+      <div className="fixed -bottom-96 -left-48 w-96 h-96 rounded-full bg-blue-200/15 blur-3xl -z-10" />
+      <div className="fixed top-1/2 right-0 w-80 h-80 rounded-full bg-orange-200/10 blur-3xl -z-10" />
+
       <AppHeader />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 py-6 space-y-6 w-full">
+      <main className="relative z-10 flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8 w-full">
         <DashboardSafetySummary safetyData={safetyData} />
         <DashboardQuickActions />
         <DashboardLearningProgress progress={progress} />
