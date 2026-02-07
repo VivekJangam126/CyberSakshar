@@ -8,11 +8,11 @@ const Button = ({
   disabled = false,
   className = '' 
 }) => {
-  const baseStyles = 'px-4 py-2 rounded-lg font-medium transition-all duration-200';
+  const baseStyles = 'px-4 py-2 rounded-lg font-semibold transition-all duration-200';
   
   const variants = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300',
-    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:bg-gray-100',
+    primary: 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 disabled:from-amber-300 disabled:to-orange-300',
+    secondary: 'bg-slate-200 text-slate-900 hover:bg-slate-300 disabled:bg-slate-100',
     danger: 'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300',
     success: 'bg-green-600 text-white hover:bg-green-700 disabled:bg-green-300',
   };

@@ -11,7 +11,7 @@ export const landingContent = {
       subtitle:
         'Learn how to identify, prevent, and report cyber crimes through interactive lessons designed for everyone.',
       primaryCta: 'Get Started Free',
-      secondaryCta: 'Sign In',
+      secondaryCta: 'Sign Up',
       chips: ['✓ Free forever', '✓ Works offline', '✓ Regional languages'],
       demoTitle: 'Live Example',
       demoHeading: 'Suspicious Payment Request',
@@ -133,7 +133,7 @@ export const landingContent = {
       subtitle:
         'साइबर अपराध पहचानना, रोकना और रिपोर्ट करना सीखें — सभी के लिए सरल और इंटरएक्टिव पाठ।',
       primaryCta: 'मुफ़्त शुरू करें',
-      secondaryCta: 'लॉगिन करें',
+      secondaryCta: 'अकाउंट बनाएं',
       chips: ['✓ हमेशा मुफ़्त', '✓ ऑफलाइन काम करता है', '✓ क्षेत्रीय भाषाएं'],
       demoTitle: 'लाइव उदाहरण',
       demoHeading: 'संदिग्ध भुगतान अनुरोध',
@@ -255,7 +255,7 @@ export const landingContent = {
       subtitle:
         'सायबर गुन्हे ओळखा, टाळा आणि रिपोर्ट करा — सर्वांसाठी सोपे आणि इंटरएक्टिव्ह धडे.',
       primaryCta: 'मोफत सुरू करा',
-      secondaryCta: 'लॉगिन करा',
+      secondaryCta: 'अकाउंट काढा ',
       chips: ['✓ कायम मोफत', '✓ ऑफलाइन चालते', '✓ प्रादेशिक भाषा'],
       demoTitle: 'लाइव्ह उदाहरण',
       demoHeading: 'संशयास्पद पेमेंट विनंती',
