@@ -13,7 +13,7 @@ const QuizIntro = () => {
       style={{ fontFamily: '"Fraunces", "Times New Roman", serif' }}
     >
       <AppHeader />
-      <div className="flex-1 px-4 py-12">
+      <div className="flex-1 px-4 ">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-8 text-center">
