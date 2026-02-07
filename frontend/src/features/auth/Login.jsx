@@ -23,6 +23,9 @@ const Login = () => {
     const result = mockApi.login(formData.email, formData.password);
     
     if (result.success) {
+      // Dispatch custom event to notify contexts
+      window.dispatchEvent(new Event('auth-changed'));
+      
       // Simulate brief loading for better UX
       setTimeout(() => {
         setLoading(false);

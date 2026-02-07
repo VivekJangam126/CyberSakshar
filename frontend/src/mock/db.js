@@ -269,6 +269,42 @@ class MockDatabase {
     console.log('[MockDB] Database reset to initial state');
   }
 
+  // User preferences operations
+  getUserPreferences(userId) {
+    const user = this.getUserById(userId);
+    if (!user) return null;
+
+    // Return preferences or defaults
+    return user.preferences || {
+      theme: 'light',
+      language: 'en',
+      notifications: true,
+    };
+  }
+
+  updateUserPreferences(userId, partialPreferences) {
+    const userIndex = this.data.users.findIndex(u => u.id === userId);
+    if (userIndex === -1) return null;
+
+    // Initialize preferences if not exists
+    if (!this.data.users[userIndex].preferences) {
+      this.data.users[userIndex].preferences = {
+        theme: 'light',
+        language: 'en',
+        notifications: true,
+      };
+    }
+
+    // Merge with existing preferences
+    this.data.users[userIndex].preferences = {
+      ...this.data.users[userIndex].preferences,
+      ...partialPreferences,
+    };
+
+    this.persist();
+    return this.data.users[userIndex].preferences;
+  }
+
   // Reset user progress only (keep account intact)
   resetUserProgress(userId) {
     // Clear quiz results
@@ -299,6 +335,8 @@ class MockDatabase {
 
     // Clear activity
     this.data.activity[userId] = [];
+
+    // DO NOT reset preferences - they persist across resets
 
     this.persist();
     console.log(`[MockDB] Progress reset for user ${userId}`);

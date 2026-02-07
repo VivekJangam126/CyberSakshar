@@ -10,6 +10,11 @@ export const DEMO_USERS = [
     role: 'student',
     avatar: null,
     createdAt: '2024-01-15T10:00:00Z',
+    preferences: {
+      theme: 'light',
+      language: 'en',
+      notifications: true,
+    },
   },
   {
     id: 'user_2',
@@ -19,6 +24,11 @@ export const DEMO_USERS = [
     role: 'citizen',
     avatar: null,
     createdAt: '2024-02-01T10:00:00Z',
+    preferences: {
+      theme: 'light',
+      language: 'en',
+      notifications: true,
+    },
   },
   {
     id: 'user_3',
@@ -28,6 +38,11 @@ export const DEMO_USERS = [
     role: 'teacher',
     avatar: null,
     createdAt: '2023-12-10T10:00:00Z',
+    preferences: {
+      theme: 'dark',
+      language: 'hi',
+      notifications: true,
+    },
   },
 ];
 

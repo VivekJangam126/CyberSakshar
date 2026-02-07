@@ -117,6 +117,16 @@ export const resetUserProgress = (userId) => {
   return progressMock.resetUserProgress(userId);
 };
 
+// ===== USER PREFERENCES =====
+
+export const getUserPreferences = (userId) => {
+  return db.getUserPreferences(userId);
+};
+
+export const updateUserPreferences = (userId, partialPreferences) => {
+  return db.updateUserPreferences(userId, partialPreferences);
+};
+
 // ===== DEV UTILITIES =====
 
 export const resetDemo = () => {
@@ -171,6 +181,10 @@ const mockApi = {
   
   // User Profile
   resetUserProgress,
+  
+  // User Preferences
+  getUserPreferences,
+  updateUserPreferences,
   
   // Dev utilities
   resetDemo,
