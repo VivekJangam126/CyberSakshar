@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { checkEligibility } from '../utils/certificateEligibility';
+import mockApi from '../../../mock/mockApi';
 import EligibilityChecklist from '../components/EligibilityChecklist';
 import CertificateCard from '../components/CertificateCard';
 import Button from '../../../components/Button';
@@ -10,11 +10,55 @@ import AppFooter from '../../../components/AppFooter';
 const CertificateStatus = () => {
   const navigate = useNavigate();
   const [eligibilityData, setEligibilityData] = useState(null);
+  const [certificateStatus, setCertificateStatus] = useState(null);
 
   useEffect(() => {
-    const data = checkEligibility();
-    setEligibilityData(data);
-  }, []);
+    const user = mockApi.getCurrentUser();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    // Get eligibility from mock backend
+    const { eligible, requirements } = mockApi.isCertificateEligible(user.id);
+    const cert = mockApi.getCertificateStatus(user.id);
+
+    setEligibilityData({
+      eligible,
+      requirements: [
+        {
+          id: 'quiz',
+          label: 'Complete Safety Assessment',
+          completed: requirements.quizCompleted,
+          description: requirements.quizCompleted 
+            ? `Scored ${requirements.quizScore}%` 
+            : 'Take the quiz to assess your cyber safety knowledge',
+        },
+        {
+          id: 'simulations',
+          label: 'Complete 2+ Simulations',
+          completed: requirements.simulationsCompleted >= 2,
+          description: `${requirements.simulationsCompleted} of 2 completed`,
+        },
+        {
+          id: 'learning',
+          label: 'Complete 2+ Learning Modules',
+          completed: requirements.learningCompleted >= 2,
+          description: `${requirements.learningCompleted} of 2 completed`,
+        },
+        {
+          id: 'score',
+          label: 'Achieve 70%+ Quiz Score',
+          completed: requirements.minimumScore >= 70,
+          description: requirements.quizCompleted 
+            ? `Current score: ${requirements.minimumScore}%` 
+            : 'Complete quiz first',
+        },
+      ],
+    });
+
+    setCertificateStatus(cert);
+  }, [navigate]);
 
   if (!eligibilityData) {
     return (
@@ -108,12 +152,21 @@ const CertificateStatus = () => {
           {/* Action Button */}
           <div className="text-center">
             {eligibilityData.eligible ? (
-              <Button
-                onClick={() => navigate('/certificate/preview')}
-                className="px-8 py-3"
-              >
-                View Certificate
-              </Button>
+              certificateStatus?.issued ? (
+                <Button
+                  onClick={() => navigate('/certificate/download')}
+                  className="px-8 py-3"
+                >
+                  Download Certificate
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate('/certificate/preview')}
+                  className="px-8 py-3"
+                >
+                  Generate Certificate
+                </Button>
+              )
             ) : (
               <Button
                 onClick={() => navigate('/dashboard')}

@@ -1,16 +1,20 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import mockApi from '../mock/mockApi';
 
 const ProfileMenu = ({ onClose }) => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
-  // Mock user data - replace with actual auth context later
-  const userName = 'User Name';
+  useEffect(() => {
+    const currentUser = mockApi.getCurrentUser();
+    setUser(currentUser);
+  }, []);
+
+  const userName = user?.name || 'User';
 
   const handleSignOut = () => {
-    // Clear auth token (placeholder logic)
-    localStorage.removeItem('authToken');
-    
-    // Redirect to login
+    mockApi.logout();
     navigate('/login');
     onClose();
   };

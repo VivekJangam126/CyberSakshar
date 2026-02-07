@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import AppHeader from '../../../components/AppHeader';
 import AppFooter from '../../../components/AppFooter';
 import RiskIndicator from '../components/RiskIndicator';
+import mockApi from '../../../mock/mockApi';
 import {
   calculateRiskScore,
   determineRiskLevel,
@@ -22,7 +23,49 @@ const QuizResult = () => {
   useEffect(() => {
     // Fade in content after mount
     setTimeout(() => setShowContent(true), 100);
-  }, []);
+
+    // Save quiz result to mock backend
+    if (answers.length > 0) {
+      const user = mockApi.getCurrentUser();
+      if (user) {
+        const { riskScore, highRiskCount, mediumRiskCount, lowRiskCount, totalQuestions } = calculateRiskScore(answers);
+        const riskLevel = determineRiskLevel(riskScore);
+        const safetyLevel = determineSafetyLevel(answers);
+
+        // Identify weak and strong areas
+        const weakAreas = [];
+        const strongAreas = [];
+        
+        answers.forEach(answer => {
+          if (answer.risk === 'high') {
+            const category = answer.category || 'general';
+            if (!weakAreas.includes(category)) weakAreas.push(category);
+          } else if (answer.risk === 'low') {
+            const category = answer.category || 'general';
+            if (!strongAreas.includes(category)) strongAreas.push(category);
+          }
+        });
+
+        const quizResult = {
+          completed: true,
+          score: Math.round(((lowRiskCount + mediumRiskCount * 0.5) / totalQuestions) * 100),
+          totalQuestions,
+          correctAnswers: lowRiskCount,
+          riskLevel,
+          riskScore,
+          safetyLevel,
+          weakAreas,
+          strongAreas,
+          answers,
+          highRiskCount,
+          mediumRiskCount,
+          lowRiskCount,
+        };
+
+        mockApi.saveQuizResult(user.id, quizResult);
+      }
+    }
+  }, [answers]);
 
   // Calculate results
   const { riskScore, highRiskCount, mediumRiskCount, lowRiskCount, totalQuestions } = calculateRiskScore(answers);

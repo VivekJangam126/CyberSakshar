@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { checkEligibility, generateCertificateData } from '../utils/certificateEligibility';
+import mockApi from '../../../mock/mockApi';
 import { generateCertificatePDF } from '../pdfGenerator';
 import CertificateLayout from '../components/CertificateLayout';
 import CertificateCard from '../components/CertificateCard';
@@ -15,16 +15,47 @@ const CertificateDownload = () => {
   const certificateRef = useRef(null);
 
   useEffect(() => {
-    const { eligible } = checkEligibility();
+    const user = mockApi.getCurrentUser();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const { eligible } = mockApi.isCertificateEligible(user.id);
     
     if (!eligible) {
       navigate('/certificate/status');
       return;
     }
 
-    // Get user name from localStorage or use default
-    const userName = localStorage.getItem('userName') || 'Student';
-    const data = generateCertificateData(userName);
+    const cert = mockApi.getCertificateStatus(user.id);
+    if (!cert.issued) {
+      navigate('/certificate/preview');
+      return;
+    }
+
+    const data = {
+      programName: 'CyberSakshar',
+      certificateTitle: 'Certificate of Completion',
+      userName: user.name,
+      completionDate: new Date(cert.issuedAt).toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }),
+      certificateId: cert.certificateId,
+      issueDate: new Date(cert.issuedAt),
+      signatures: [
+        {
+          title: 'Program Director',
+          name: 'CyberSakshar Team',
+        },
+        {
+          title: 'Chief Security Officer',
+          name: 'Digital Safety Initiative',
+        },
+      ],
+    };
     setCertificateData(data);
   }, [navigate]);
 

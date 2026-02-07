@@ -10,6 +10,8 @@ import LearningRouter from './features/learning/LearningRouter'
 import ComplaintRouter from './features/complaints/ComplaintRouter'
 import CertificateRouter from './features/certificate/CertificateRouter'
 import SafetyReportRouter from './features/safetyReport/SafetyReportRouter'
+import ProfilePage from './features/profile/ProfilePage'
+import DevTools from './mock/DevTools'
 
 function App() {
   return (
@@ -26,7 +28,11 @@ function App() {
         <Route path="/complaints/*" element={<ComplaintRouter />} />
         <Route path="/certificate/*" element={<CertificateRouter />} />
         <Route path="/safety-report/*" element={<SafetyReportRouter />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
+      
+      {/* Dev Tools - only in development */}
+      {import.meta.env.DEV && <DevTools />}
     </BrowserRouter>
   )
 }

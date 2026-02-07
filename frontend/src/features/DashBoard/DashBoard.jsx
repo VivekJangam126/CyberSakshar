@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppHeader from '../../components/AppHeader';
 import AppFooter from '../../components/AppFooter';
 import DashboardSafetySummary from '../../components/dashboard/DashboardSafetySummary';
@@ -9,47 +11,110 @@ import DashboardRecommendations from '../../components/dashboard/DashboardRecomm
 import DashboardRecentActivity from '../../components/dashboard/DashboardRecentActivity';
 import DashboardCertificateStatus from '../../components/dashboard/DashboardCertificateStatus';
 import DashboardSafetyReport from '../../components/dashboard/DashboardSafetyReport';
+import mockApi from '../../mock/mockApi';
 
 const Dashboard = () => {
-  // Mock user data (replace with API / auth context later)
+  const navigate = useNavigate();
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check authentication
+    const currentUser = mockApi.getCurrentUser();
+    
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
+    // Load dashboard data
+    const loadData = () => {
+      const data = mockApi.getDashboardData(currentUser.id);
+      setDashboardData(data);
+      setLoading(false);
+    };
+
+    loadData();
+
+    // Refresh data when window gains focus (user returns from another page)
+    const handleFocus = () => {
+      loadData();
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [navigate]);
+
+  if (loading || !dashboardData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div>
+          <p className="mt-4 text-slate-600">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Transform data for components
   const safetyData = {
-    level: 'Beginner',
-    riskScore: 'Medium',
-    riskPercentage: 55,
-    message:
-      'You are protected from basic scams but should learn about phishing and password safety.',
+    level: dashboardData.quiz?.safetyLevel || 'Beginner',
+    riskScore: dashboardData.riskLevel === 'low' ? 'Low' :
+               dashboardData.riskLevel === 'medium' ? 'Medium' : 'High',
+    riskPercentage: dashboardData.riskScore,
+    message: dashboardData.quiz?.completed 
+      ? `You scored ${dashboardData.quiz.score}% on the safety assessment.`
+      : 'Take the safety assessment to understand your risk level.',
   };
 
   const progress = {
-    modulesCompleted: 3,
-    totalModules: 8,
-    percentage: 38,
-    xpEarned: 120,
-    badges: 2,
+    modulesCompleted: dashboardData.learning.completed,
+    totalModules: dashboardData.learning.total,
+    percentage: Math.round((dashboardData.learning.completed / dashboardData.learning.total) * 100),
+    xpEarned: dashboardData.learning.completed * 50,
+    badges: dashboardData.simulations.completed,
   };
 
-  const recommendations = [
-    {
+  const recommendations = [];
+  if (!dashboardData.quiz?.completed) {
+    recommendations.push({
       id: 1,
-      title: 'Micro Learning Module',
-      subtitle: 'Why OTP Should Never Be Shared',
-      action: 'Learn',
-      path: '/learning/otp-safety/intro',
-    },
-    {
-      id: 2,
-      title: 'Quick Safety Lesson',
-      subtitle: 'Spotting Dangerous Links',
+      title: 'Safety Assessment',
+      subtitle: 'Identify your risk areas',
       action: 'Start',
-      path: '/learning/phishing-links/intro',
-    },
-  ];
+      path: '/quiz/intro',
+    });
+  }
+  if (dashboardData.simulations.completed < 2) {
+    recommendations.push({
+      id: 2,
+      title: 'Practice Simulation',
+      subtitle: 'Build real-world skills',
+      action: 'Practice',
+      path: '/simulations',
+    });
+  }
+  if (dashboardData.learning.completed < 2) {
+    recommendations.push({
+      id: 3,
+      title: 'Learning Module',
+      subtitle: 'Strengthen your knowledge',
+      action: 'Learn',
+      path: '/learning',
+    });
+  }
 
-  const recentActivity = [
-    { id: 1, title: 'Password Security Quiz', detail: 'Score: 6/10', time: '2 hours ago' },
-    { id: 2, title: 'OTP Fraud Simulation', detail: 'Completed', time: '1 day ago' },
-    { id: 3, title: 'Cyber Basics Certificate', detail: 'Earned', time: '3 days ago' },
-  ];
+  const recentActivity = dashboardData.activity
+    .filter((act, index, self) => 
+      // Remove duplicates by ID
+      index === self.findIndex(a => a.id === act.id)
+    )
+    .map(act => ({
+      id: act.id,
+      title: act.title,
+      detail: act.type === 'quiz' ? `Score: ${dashboardData.quiz?.score || 0}%` : 'Completed',
+      time: new Date(act.timestamp).toLocaleDateString(),
+    }));
 
   return (
     <div 

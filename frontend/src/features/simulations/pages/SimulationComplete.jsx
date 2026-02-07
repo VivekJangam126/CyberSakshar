@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../../../components/Button';
 import AppHeader from '../../../components/AppHeader';
 import AppFooter from '../../../components/AppFooter';
+import mockApi from '../../../mock/mockApi';
 
 const SimulationComplete = () => {
   const navigate = useNavigate();
@@ -14,7 +15,26 @@ const SimulationComplete = () => {
   useEffect(() => {
     // Fade in content after mount
     setTimeout(() => setShowContent(true), 100);
-  }, []);
+
+    // Save simulation completion to mock backend
+    if (scenario && decisions) {
+      const user = mockApi.getCurrentUser();
+      if (user) {
+        const safeChoicesCount = decisions.filter(d => d.isSafe).length;
+        const totalChoices = decisions.length;
+        const score = Math.round((safeChoicesCount / totalChoices) * 100);
+
+        const simulationResult = {
+          score,
+          correctDecisions: safeChoicesCount,
+          totalDecisions: totalChoices,
+          timeTaken: 0, // Could track this if needed
+        };
+
+        mockApi.completeSimulation(user.id, scenario.id, simulationResult);
+      }
+    }
+  }, [scenario, decisions]);
 
   if (!scenario) {
     navigate('/simulations');

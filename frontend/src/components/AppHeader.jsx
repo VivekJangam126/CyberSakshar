@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ProfileMenu from './ProfileMenu';
+import mockApi from '../mock/mockApi';
 
 const AppHeader = () => {
   const navigate = useNavigate();
@@ -8,6 +9,14 @@ const AppHeader = () => {
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const currentUser = mockApi.getCurrentUser();
+    setUser(currentUser);
+  }, []);
+
+  const userInitial = user?.name?.charAt(0).toUpperCase() || 'U';
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -77,7 +86,7 @@ const AppHeader = () => {
               className="w-11 h-11 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center hover:shadow-xl hover:from-orange-600 hover:to-amber-600 focus:outline-none transition-all font-bold border-2 border-orange-600 shadow-lg"
               aria-label="Profile"
             >
-              U
+              {userInitial}
             </button>
 
             {showProfileMenu && (
