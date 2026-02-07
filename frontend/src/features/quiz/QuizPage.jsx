@@ -4,6 +4,7 @@ import QuestionCard from './QuestionCard';
 import { calculateScore, getNextQuestion } from './quizLogic';
 import Button from '../../components/Button';
 import ProgressBar from '../../components/ProgressBar';
+import 
 
 const QuizPage = () => {
   const [quiz, setQuiz] = useState(null);
