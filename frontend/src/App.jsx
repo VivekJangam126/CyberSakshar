@@ -4,6 +4,7 @@ import Dashboard from './features/DashBoard/DashBoard'
 import LandingWithLoading from './features/landing/LandingWithLoading'
 import Login from './features/auth/Login'
 import Register from './features/auth/Register'
+import QuizRouter from './features/quiz/QuizRouter'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/quiz/*" element={<QuizRouter />} />
       </Routes>
     </BrowserRouter>
   )

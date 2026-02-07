@@ -3,8 +3,8 @@ import App from '../App';
 import Landing from '../features/landing/Landing';
 import Login from '../features/auth/Login';
 import Register from '../features/auth/Register';
-import Dashboard from '../features/landing/Dashboard';
-import QuizPage from '../features/quiz/QuizPage';
+import Dashboard from '../features/DashBoard/DashBoard';
+import QuizRouter from '../features/quiz/QuizRouter';
 import SimulationPage from '../features/simulations/SimulationPage';
 import Lessons from '../features/learning/Lessons';
 import ComplaintForm from '../features/complaints/ComplaintForm';
@@ -32,8 +32,8 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: 'quiz',
-        element: <QuizPage />,
+        path: 'quiz/*',
+        element: <QuizRouter />,
       },
       {
         path: 'simulations',

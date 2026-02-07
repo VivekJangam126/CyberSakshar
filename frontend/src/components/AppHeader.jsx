@@ -12,7 +12,7 @@ const AppHeader = () => {
   const navItems = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Learn', path: '/learn' },
-    { name: 'Quiz', path: '/quiz' },
+    { name: 'Quiz', path: '/quiz/*' },
     { name: 'Simulations', path: '/simulations' },
     { name: 'Help', path: '/help' },
   ];
@@ -22,13 +22,13 @@ const AppHeader = () => {
   return (
     <>
       {/* Top Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto h-14 px-4 flex items-center justify-between">
+      <header className="relative z-20 border-b-2 border-slate-300 bg-white/95 backdrop-blur-sm shadow-md">
+        <div className="max-w-7xl mx-auto h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 
           {/* Left: Hamburger (Mobile) */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-gray-300 hover:text-white text-xl"
+            className="md:hidden text-slate-700 hover:text-slate-900 text-2xl transition-colors font-bold hover:bg-slate-100 rounded-lg p-2"
             aria-label="Open menu"
           >
             ☰
@@ -37,7 +37,7 @@ const AppHeader = () => {
           {/* Left: Logo (Desktop) */}
           <button
             onClick={() => navigate('/dashboard')}
-            className="hidden md:block text-lg font-semibold text-white tracking-wide hover:text-blue-400"
+            className="hidden md:block text-xl font-black text-slate-900 tracking-tight hover:text-orange-600 transition-colors"
           >
             CyberSakshar
           </button>
@@ -45,21 +45,21 @@ const AppHeader = () => {
           {/* Center: Logo (Mobile) */}
           <button
             onClick={() => navigate('/dashboard')}
-            className="md:hidden text-base font-semibold text-white tracking-wide"
+            className="md:hidden text-lg font-black text-slate-900 tracking-tight"
           >
             CyberSakshar
           </button>
 
           {/* Center Nav (Desktop) */}
-          <nav className="hidden md:flex gap-8">
+          <nav className="hidden md:flex gap-9">
             {navItems.map((item) => (
               <button
                 key={item.path}
                 onClick={() => navigate(item.path)}
-                className={`text-sm font-medium pb-1 transition-colors ${
+                className={`text-sm font-bold pb-2 border-b-2 transition-all ${
                   isActive(item.path)
-                    ? 'text-blue-400 border-b-2 border-blue-400'
-                    : 'text-gray-300 hover:text-white'
+                    ? 'text-orange-600 border-orange-600'
+                    : 'text-slate-700 border-transparent hover:text-orange-600 hover:border-orange-300'
                 }`}
               >
                 {item.name}
@@ -74,10 +74,10 @@ const AppHeader = () => {
             onMouseLeave={() => setShowProfileMenu(false)}
           >
             <button
-              className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 focus:outline-none"
+              className="w-11 h-11 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center hover:shadow-xl hover:from-orange-600 hover:to-amber-600 focus:outline-none transition-all font-bold border-2 border-orange-600 shadow-lg"
               aria-label="Profile"
             >
-              <span className="text-sm font-medium">U</span>
+              U
             </button>
 
             {showProfileMenu && (
@@ -88,8 +88,8 @@ const AppHeader = () => {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-gray-900 border-t border-gray-800">
-            <div className="flex flex-col px-4 py-4 gap-3">
+          <div className="md:hidden bg-white/95 border-t-2 border-slate-300 backdrop-blur-sm shadow-md">
+            <div className="flex flex-col px-4 py-4 gap-2">
               {navItems.map((item) => (
                 <button
                   key={item.path}
@@ -97,10 +97,10 @@ const AppHeader = () => {
                     navigate(item.path);
                     setMobileMenuOpen(false);
                   }}
-                  className={`text-left text-sm font-medium ${
+                  className={`text-left text-sm font-bold py-3 px-4 rounded-lg border-2 transition-all ${
                     isActive(item.path)
-                      ? 'text-blue-400'
-                      : 'text-gray-300 hover:text-white'
+                      ? 'text-orange-700 bg-orange-100 border-orange-300'
+                      : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100 border-transparent'
                   }`}
                 >
                   {item.name}
@@ -112,7 +112,7 @@ const AppHeader = () => {
       </header>
 
       {/* Spacer */}
-      <div className="h-14" />
+      <div className="h-16" />
     </>
   );
 };
