@@ -6,9 +6,12 @@ import Register from '../features/auth/Register';
 import Dashboard from '../features/DashBoard/DashBoard';
 import QuizRouter from '../features/quiz/QuizRouter';
 import SimulationPage from '../features/simulations/SimulationPage';
+import LearningRouter from '../features/learning/LearningRouter';
 import Lessons from '../features/learning/Lessons';
 import ComplaintForm from '../features/complaints/ComplaintForm';
-import Certificate from '../features/certificate/Certificate';
+import CertificateRouter from '../features/certificate/CertificateRouter';
+import ProfilePage from '../features/profile/ProfilePage';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
@@ -29,27 +32,39 @@ export const router = createBrowserRouter([
       },
       {
         path: 'dashboard',
-        element: <Dashboard />,
+        element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
       },
       {
         path: 'quiz/*',
-        element: <QuizRouter />,
+        element: <ProtectedRoute><QuizRouter /></ProtectedRoute>,
       },
       {
         path: 'simulations',
-        element: <SimulationPage />,
+        element: <ProtectedRoute><SimulationPage /></ProtectedRoute>,
+      },
+      {
+        path: 'learning/*',
+        element: <ProtectedRoute><LearningRouter /></ProtectedRoute>,
+      },
+      {
+        path: 'learn/*',
+        element: <ProtectedRoute><LearningRouter /></ProtectedRoute>,
       },
       {
         path: 'lessons',
-        element: <Lessons />,
+        element: <ProtectedRoute><Lessons /></ProtectedRoute>,
       },
       {
         path: 'complaints',
-        element: <ComplaintForm />,
+        element: <ProtectedRoute><ComplaintForm /></ProtectedRoute>,
       },
       {
-        path: 'certificate',
-        element: <Certificate />,
+        path: 'certificate/*',
+        element: <ProtectedRoute><CertificateRouter /></ProtectedRoute>,
+      },
+      {
+        path: 'profile',
+        element: <ProtectedRoute><ProfilePage /></ProtectedRoute>,
       },
     ],
   },

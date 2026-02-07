@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Button from '../../components/Button';
 import AppFooter from '../../components/AppFooter';
+import mockApi from '../../mock/mockApi';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -15,12 +17,24 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
     
-    // Simulate a brief loading state
-    setTimeout(() => {
+    // Use mock API for authentication
+    const result = mockApi.login(formData.email, formData.password);
+    
+    if (result.success) {
+      // Dispatch custom event to notify contexts
+      window.dispatchEvent(new Event('auth-changed'));
+      
+      // Simulate brief loading for better UX
+      setTimeout(() => {
+        setLoading(false);
+        navigate('/dashboard');
+      }, 500);
+    } else {
       setLoading(false);
-      navigate('/dashboard');
-    }, 500);
+      setError(result.error || 'Login failed');
+    }
   };
 
   return (
@@ -38,6 +52,19 @@ const Login = () => {
       <div className="w-full max-w-xs">
         <div className="rounded-3xl bg-white px-6 pb-6 pt-6 shadow-2xl border-t-4 border-orange-500">
           <h2 className="text-center text-2xl font-black text-slate-900">Sign In</h2>
+
+          {error && (
+            <div className="mt-3 rounded-xl bg-red-50 border border-red-200 px-4 py-2 text-sm text-red-700">
+              {error}
+            </div>
+          )}
+
+          <div className="mt-3 rounded-xl bg-blue-50 border border-blue-200 px-3 py-2 text-xs text-blue-700">
+            <strong>Demo accounts:</strong><br />
+            student@demo.com / student123<br />
+            citizen@demo.com / citizen123<br />
+            teacher@demo.com / teacher123
+          </div>
 
           <form onSubmit={handleSubmit} className="mt-5 space-y-3">
             <div>
