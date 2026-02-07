@@ -8,6 +8,7 @@ import DashboardLearningProgress from '../../components/dashboard/DashboardLearn
 import DashboardRecommendations from '../../components/dashboard/DashboardRecommendations';
 import DashboardRecentActivity from '../../components/dashboard/DashboardRecentActivity';
 import DashboardCertificateStatus from '../../components/dashboard/DashboardCertificateStatus';
+import DashboardSafetyReport from '../../components/dashboard/DashboardSafetyReport';
 
 const Dashboard = () => {
   // Mock user data (replace with API / auth context later)
@@ -64,6 +65,7 @@ const Dashboard = () => {
 
       <main className="relative z-10 flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8 w-full">
         <DashboardSafetySummary safetyData={safetyData} />
+        <DashboardSafetyReport />
         <DashboardCertificateStatus />
         <DashboardLastSimulation />
         <DashboardLastSafetyCheck level="Intermediate" risk="Medium" date="2 hours ago" />
