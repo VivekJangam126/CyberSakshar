@@ -47,10 +47,10 @@ const ProfileMenu = ({ onClose }) => {
             My Profile
           </button>
           <button
-            onClick={() => handleNavigation('/progress')}
+            onClick={() => handleNavigation('/safety-report')}
             className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
           >
-            My Progress
+            My Safety Report
           </button>
           <button
             onClick={() => handleNavigation('/certificate/status')}

@@ -12,9 +12,9 @@ const AppHeader = () => {
   const navItems = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Learn', path: '/learn' },
-    { name: 'Quiz', path: '/quiz/*' },
+    { name: 'Quiz', path: '/quiz' },
     { name: 'Simulations', path: '/simulations' },
-    { name: 'Help', path: '/help' },
+    { name: 'Report Fraud', path: '/complaints' },
   ];
 
   const isActive = (path) => location.pathname.startsWith(path);

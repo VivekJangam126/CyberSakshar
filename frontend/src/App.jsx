@@ -7,8 +7,9 @@ import Register from './features/auth/Register'
 import QuizRouter from './features/quiz/QuizRouter'
 import SimulationRouter from './features/simulations/SimulationRouter'
 import LearningRouter from './features/learning/LearningRouter'
-import ComplaintForm from './features/complaints/ComplaintForm'
+import ComplaintRouter from './features/complaints/ComplaintRouter'
 import CertificateRouter from './features/certificate/CertificateRouter'
+import SafetyReportRouter from './features/safetyReport/SafetyReportRouter'
 
 function App() {
   return (
@@ -22,8 +23,9 @@ function App() {
         <Route path="/simulations/*" element={<SimulationRouter />} />
         <Route path="/learn/*" element={<LearningRouter />} />
         <Route path="/learning/*" element={<LearningRouter />} />
-        <Route path="/complaints" element={<ComplaintForm />} />
+        <Route path="/complaints/*" element={<ComplaintRouter />} />
         <Route path="/certificate/*" element={<CertificateRouter />} />
+        <Route path="/safety-report/*" element={<SafetyReportRouter />} />
       </Routes>
     </BrowserRouter>
   )
