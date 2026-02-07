@@ -176,7 +176,7 @@ const Register = () => {
           </p>
         </div>
       </div>
-      <AppFooter />
+      {/* <AppFooter /> */}
     </div>
   );
 };

@@ -131,7 +131,7 @@ const Login = () => {
           </p>
         </div>
       </div>
-      <AppFooter />
+      {/* <AppFooter /> */}
     </div>
   );
 };

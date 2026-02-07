@@ -4,7 +4,6 @@ import Dashboard from './features/DashBoard/DashBoard'
 import LandingWithLoading from './features/landing/LandingWithLoading'
 import Login from './features/auth/Login'
 import Register from './features/auth/Register'
-import Dashboard from './features/landing/Dashboard'
 
 function App() {
   return (

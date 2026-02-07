@@ -10,7 +10,7 @@ const AppHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { name: 'Dashboard', path: '/home' },
+    { name: 'Dashboard', path: '/dashboard' },
     { name: 'Learn', path: '/learn' },
     { name: 'Quiz', path: '/quiz' },
     { name: 'Simulations', path: '/simulations' },
@@ -36,7 +36,7 @@ const AppHeader = () => {
 
           {/* Left: Logo (Desktop) */}
           <button
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/dashboard')}
             className="hidden md:block text-lg font-semibold text-white tracking-wide hover:text-blue-400"
           >
             CyberSakshar
@@ -44,7 +44,7 @@ const AppHeader = () => {
 
           {/* Center: Logo (Mobile) */}
           <button
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/dashboard')}
             className="md:hidden text-base font-semibold text-white tracking-wide"
           >
             CyberSakshar
