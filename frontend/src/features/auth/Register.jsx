@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Button from '../../components/Button';
+import AppFooter from '../../components/AppFooter';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -175,6 +176,7 @@ const Register = () => {
           </p>
         </div>
       </div>
+      <AppFooter />
     </div>
   );
 };

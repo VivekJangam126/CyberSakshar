@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Button from '../../components/Button';
+import AppFooter from '../../components/AppFooter';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -130,6 +131,7 @@ const Login = () => {
           </p>
         </div>
       </div>
+      <AppFooter />
     </div>
   );
 };
