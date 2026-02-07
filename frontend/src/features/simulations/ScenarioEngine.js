@@ -1,77 +1,47 @@
+// Scenario Engine - Utility for managing simulation flow
+// This is a placeholder for future backend integration
+// Currently, all logic is handled in the page components with mock data
+
 export class ScenarioEngine {
   constructor(scenario) {
     this.scenario = scenario;
   }
 
+  // Get initial state for a scenario
   getInitialState() {
     return {
-      currentSceneIndex: 0,
-      currentScene: this.scenario.scenes[0],
-      choices: [],
-      score: 0,
+      currentStepIndex: 0,
+      decisions: [],
       completed: false,
     };
   }
 
-  processChoice(currentState, choice) {
-    const newChoices = [...currentState.choices, choice];
-    const newScore = currentState.score + (choice.points || 0);
-
-    if (choice.nextScene === 'end') {
-      return {
-        ...currentState,
-        choices: newChoices,
-        score: newScore,
-        completed: true,
-        result: this.calculateResult(newScore, newChoices),
-      };
-    }
-
-    const nextSceneIndex = this.scenario.scenes.findIndex(
-      (scene) => scene.id === choice.nextScene
-    );
+  // Process a decision and move to next step
+  processDecision(currentState, decision) {
+    const newDecisions = [...currentState.decisions, decision];
+    const nextStepIndex = currentState.currentStepIndex + 1;
+    const isComplete = nextStepIndex >= this.scenario.steps.length;
 
     return {
-      currentSceneIndex: nextSceneIndex,
-      currentScene: this.scenario.scenes[nextSceneIndex],
-      choices: newChoices,
-      score: newScore,
-      completed: false,
+      currentStepIndex: nextStepIndex,
+      decisions: newDecisions,
+      completed: isComplete,
     };
   }
 
-  calculateResult(score, choices) {
-    const maxScore = this.scenario.maxScore || 100;
-    const percentage = Math.round((score / maxScore) * 100);
+  // Calculate summary statistics
+  getSummary(decisions) {
+    const safeChoices = decisions.filter(d => d.isSafe).length;
+    const riskyChoices = decisions.filter(d => !d.isSafe).length;
+    const totalChoices = decisions.length;
 
-    if (percentage >= 80) {
-      return {
-        title: 'Excellent!',
-        message: 'You handled the situation very well and made secure choices.',
-        score: percentage,
-        grade: 'A',
-      };
-    } else if (percentage >= 60) {
-      return {
-        title: 'Good Job!',
-        message: 'You made some good choices but there is room for improvement.',
-        score: percentage,
-        grade: 'B',
-      };
-    } else if (percentage >= 40) {
-      return {
-        title: 'Fair',
-        message: 'You need to be more careful with cybersecurity decisions.',
-        score: percentage,
-        grade: 'C',
-      };
-    } else {
-      return {
-        title: 'Needs Improvement',
-        message: 'Consider reviewing the lessons before trying again.',
-        score: percentage,
-        grade: 'D',
-      };
-    }
+    return {
+      safeChoices,
+      riskyChoices,
+      totalChoices,
+      safetyPercentage: totalChoices > 0 ? Math.round((safeChoices / totalChoices) * 100) : 0,
+    };
   }
 }
+
+export default ScenarioEngine;

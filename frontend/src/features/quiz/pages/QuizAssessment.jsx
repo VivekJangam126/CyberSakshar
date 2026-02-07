@@ -14,21 +14,46 @@ const QuizAssessment = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [answers, setAnswers] = useState([]);
+  const [showAdaptiveMessage, setShowAdaptiveMessage] = useState(false);
+  const [adaptiveMessage, setAdaptiveMessage] = useState('');
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === quizQuestions.length - 1;
+
+  // Adaptive messages that create AI perception
+  const adaptiveMessages = [
+    "Analyzing your response pattern...",
+    "Adjusting difficulty based on your answers...",
+    "Identifying risk areas...",
+    "Updating your safety profile...",
+    "Evaluating your cyber awareness...",
+    "Calibrating next question...",
+    "Processing your decision pattern...",
+    "Assessing threat recognition..."
+  ];
 
   useEffect(() => {
     // Reset selection when question changes
     setSelectedOption(null);
     setShowFeedback(false);
+    setShowAdaptiveMessage(false);
   }, [currentQuestionIndex]);
 
   const handleOptionSelect = (option) => {
     if (showFeedback) return; // Prevent changing answer after selection
     
     setSelectedOption(option);
-    setShowFeedback(true);
+    
+    // Show adaptive message first (creates AI perception)
+    const randomMessage = adaptiveMessages[Math.floor(Math.random() * adaptiveMessages.length)];
+    setAdaptiveMessage(randomMessage);
+    setShowAdaptiveMessage(true);
+
+    // After 800ms, show feedback and hide adaptive message
+    setTimeout(() => {
+      setShowFeedback(true);
+      setShowAdaptiveMessage(false);
+    }, 800);
 
     // Save answer
     const newAnswer = {
@@ -93,10 +118,25 @@ const QuizAssessment = () => {
               isSelected={selectedOption?.id === option.id}
               onSelect={handleOptionSelect}
               showFeedback={showFeedback}
-              disabled={showFeedback}
+              disabled={showFeedback || showAdaptiveMessage}
             />
           ))}
         </QuizQuestionCard>
+
+        {/* Adaptive AI Message - appears after selection */}
+        {showAdaptiveMessage && (
+          <div className="mt-6 flex items-center justify-center">
+            <div className="animate-pulse rounded-2xl border-2 border-orange-200 bg-orange-50/80 px-6 py-3 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <div className="h-2 w-2 animate-pulse rounded-full bg-orange-500" />
+                <p className="text-xs font-semibold text-orange-700">
+                  {adaptiveMessage}
+                </p>
+                <div className="h-2 w-2 animate-pulse rounded-full bg-orange-500" />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Navigation Buttons */}
         <div className="mt-8 flex items-center justify-between gap-4">

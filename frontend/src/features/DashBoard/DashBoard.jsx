@@ -1,10 +1,13 @@
 import AppHeader from '../../components/AppHeader';
 import AppFooter from '../../components/AppFooter';
 import DashboardSafetySummary from '../../components/dashboard/DashboardSafetySummary';
+import DashboardLastSafetyCheck from '../../components/dashboard/DashboardLastSafetyCheck';
+import DashboardLastSimulation from '../../components/dashboard/DashboardLastSimulation';
 import DashboardQuickActions from '../../components/dashboard/DashboardQuickActions';
 import DashboardLearningProgress from '../../components/dashboard/DashboardLearningProgress';
 import DashboardRecommendations from '../../components/dashboard/DashboardRecommendations';
 import DashboardRecentActivity from '../../components/dashboard/DashboardRecentActivity';
+import DashboardCertificateStatus from '../../components/dashboard/DashboardCertificateStatus';
 
 const Dashboard = () => {
   // Mock user data (replace with API / auth context later)
@@ -27,17 +30,17 @@ const Dashboard = () => {
   const recommendations = [
     {
       id: 1,
-      title: 'Next Recommended Lesson',
-      subtitle: 'Phishing Awareness',
-      action: 'Start',
-      path: '/learn/phishing',
+      title: 'Micro Learning Module',
+      subtitle: 'Why OTP Should Never Be Shared',
+      action: 'Learn',
+      path: '/learning/otp-safety/intro',
     },
     {
       id: 2,
-      title: 'Try Simulation',
-      subtitle: 'Fake Bank Call',
-      action: 'Practice',
-      path: '/simulations/bank-call',
+      title: 'Quick Safety Lesson',
+      subtitle: 'Spotting Dangerous Links',
+      action: 'Start',
+      path: '/learning/phishing-links/intro',
     },
   ];
 
@@ -61,6 +64,9 @@ const Dashboard = () => {
 
       <main className="relative z-10 flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8 w-full">
         <DashboardSafetySummary safetyData={safetyData} />
+        <DashboardCertificateStatus />
+        <DashboardLastSimulation />
+        <DashboardLastSafetyCheck level="Intermediate" risk="Medium" date="2 hours ago" />
         <DashboardQuickActions />
         <DashboardLearningProgress progress={progress} />
         <DashboardRecommendations recommendations={recommendations} />
