@@ -1,23 +1,47 @@
 // LearningHome - Show recommended learning modules
 
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppHeader from '../../../components/AppHeader';
 import AppFooter from '../../../components/AppFooter';
 import ModuleCard from '../components/ModuleCard';
+import mockApi from '../../../mock/mockApi';
 import { otpSafetyModule } from '../data/otpSafetyModule';
 import { phishingLinksModule } from '../data/phishingLinksModule';
 import { urgencyScamModule } from '../data/urgencyScamModule';
 
 const LearningHome = () => {
   const navigate = useNavigate();
+  const [completedModules, setCompletedModules] = useState([]);
+
+  useEffect(() => {
+    const user = mockApi.getCurrentUser();
+    if (user) {
+      const learning = mockApi.getLearningProgress(user.id);
+      setCompletedModules(learning.modulesCompleted || []);
+    }
+  }, []);
+
+  // Check if module is completed
+  const isCompleted = (moduleId) => {
+    const moduleIdMap = {
+      'otp-safety': 'otp_safety',
+      'phishing-links': 'phishing_links',
+      'urgency-scams': 'urgency_scam',
+    };
+    const backendId = moduleIdMap[moduleId] || moduleId;
+    return completedModules.includes(backendId);
+  };
 
   // Mock: These would come from user's quiz/simulation history
-  const recommendedModules = [
-    { ...otpSafetyModule, recommended: true },
-    { ...phishingLinksModule, recommended: true },
+  const allModules = [
+    { ...otpSafetyModule, completed: isCompleted('otp-safety') },
+    { ...phishingLinksModule, completed: isCompleted('phishing-links') },
+    { ...urgencyScamModule, completed: isCompleted('urgency-scams') },
   ];
 
-  const otherModules = [urgencyScamModule];
+  const recommendedModules = allModules.filter(m => !m.completed).slice(0, 2);
+  const otherModules = allModules.filter(m => !recommendedModules.includes(m));
 
   return (
     <div

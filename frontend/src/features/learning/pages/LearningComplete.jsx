@@ -1,10 +1,12 @@
 // LearningComplete - Close the learning loop
 
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppHeader from '../../../components/AppHeader';
 import AppFooter from '../../../components/AppFooter';
 import Button from '../../../components/Button';
 import CompletionBanner from '../components/CompletionBanner';
+import mockApi from '../../../mock/mockApi';
 import { otpSafetyModule } from '../data/otpSafetyModule';
 import { phishingLinksModule } from '../data/phishingLinksModule';
 import { urgencyScamModule } from '../data/urgencyScamModule';
@@ -19,6 +21,26 @@ const LearningComplete = () => {
   const navigate = useNavigate();
   const { moduleId } = useParams();
   const module = modules[moduleId];
+
+  useEffect(() => {
+    // Save module completion to mock backend
+    if (module) {
+      const user = mockApi.getCurrentUser();
+      if (user) {
+        // Map URL-friendly IDs to backend IDs
+        const moduleIdMap = {
+          'otp-safety': 'otp_safety',
+          'phishing-links': 'phishing_links',
+          'urgency-scams': 'urgency_scam',
+        };
+        
+        const backendModuleId = moduleIdMap[moduleId] || moduleId;
+        const totalSteps = module.content?.length || 5;
+        
+        mockApi.completeModule(user.id, backendModuleId, totalSteps);
+      }
+    }
+  }, [module, moduleId]);
 
   if (!module) {
     navigate('/learning');

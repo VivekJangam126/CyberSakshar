@@ -1,9 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CyberSakshar</title>
+    
+    <!-- Initialize theme before first paint to prevent flash -->
+    <script>
+      (function() {
+        try {
+          // Get auth user from localStorage
+          const authUser = localStorage.getItem('auth_user');
+          if (authUser) {
+            const user = JSON.parse(authUser);
+            // Get DB from localStorage
+            const db = localStorage.getItem('CYBERSAKSHAR_DB');
+            if (db) {
+              const dbData = JSON.parse(db);
+              const dbUser = dbData.users?.find(u => u.id === user.id);
+              const theme = dbUser?.preferences?.theme || 'light';
+              
+              // Apply theme immediately
+              if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+              }
+            }
+          }
+        } catch (e) {
+          // Silently fail - React will handle it
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getMockReportData } from '../data/mockReportData';
-import { generateReport } from '../utils/reportGenerator';
+import mockApi from '../../../mock/mockApi';
 import ReportHeader from '../components/ReportHeader';
 import SafetyOverview from '../components/SafetyOverview';
 import RiskAreas from '../components/RiskAreas';
@@ -19,16 +18,61 @@ const SafetyReportPage = () => {
   const [reportData, setReportData] = useState(null);
 
   useEffect(() => {
-    // Generate report from mock data
-    const data = getMockReportData();
-    const report = generateReport(data);
+    const user = mockApi.getCurrentUser();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    // Generate report from mock backend
+    const report = mockApi.generateSafetyReport(user.id);
     
+    if (!report) {
+      navigate('/dashboard');
+      return;
+    }
+
     setReportData({
-      user: data.user,
-      data: data,
-      report: report,
+      user: {
+        name: report.userName,
+        reportDate: new Date(report.generatedAt).toLocaleDateString('en-IN', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
+      },
+      data: {
+        simulations: {
+          attempted: report.practiceSummary.length,
+          completed: report.practiceSummary.filter(s => s.completed).length,
+          scenarios: report.practiceSummary.map(s => ({
+            name: s.name || s.id,
+            status: s.completed ? 'completed' : 'attempted',
+          })),
+        },
+        learning: {
+          completed: report.learningCoverage.filter(l => l.completed).length === report.learningCoverage.length,
+          modulesCompleted: report.learningCoverage.filter(l => l.completed).length,
+          totalModules: report.learningCoverage.length,
+          topics: report.learningCoverage.filter(l => l.completed).map(l => l.name),
+        },
+      },
+      report: {
+        safetyLevel: report.riskLevel === 'low' ? 'Advanced' : 
+                     report.riskLevel === 'medium' ? 'Intermediate' : 'Beginner',
+        riskLevel: report.riskLevel,
+        riskAreas: report.riskAreas,
+        insight: `Based on your performance, you have achieved a readiness score of ${report.readinessScore}%. ${
+          report.readinessScore >= 80 
+            ? 'You demonstrate strong cyber safety awareness and are well-prepared to handle digital threats.'
+            : report.readinessScore >= 60
+            ? 'You have good foundational knowledge but should continue practicing to strengthen your skills.'
+            : 'Focus on completing more learning modules and simulations to improve your cyber safety readiness.'
+        }`,
+        nextSteps: report.nextSteps,
+      },
     });
-  }, []);
+  }, [navigate]);
 
   if (!reportData) {
     return (

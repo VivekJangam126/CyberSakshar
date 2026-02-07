@@ -12,10 +12,21 @@ const ModuleCard = ({ module, recommended = false }) => {
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border-2 border-slate-200 bg-white/90 p-6 shadow-lg transition-all hover:border-orange-300 hover:shadow-xl">
-      {recommended && (
+      {recommended && !module.completed && (
         <div className="absolute right-4 top-4">
           <span className="inline-flex items-center gap-1 rounded-full bg-orange-500 px-3 py-1 text-xs font-bold text-white">
             <span>⭐</span> Recommended
+          </span>
+        </div>
+      )}
+
+      {module.completed && (
+        <div className="absolute right-4 top-4">
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-white">
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+            Completed
           </span>
         </div>
       )}
@@ -58,7 +69,7 @@ const ModuleCard = ({ module, recommended = false }) => {
             variant="secondary"
             className="w-full sm:w-auto"
           >
-            Start Learning
+            {module.completed ? 'Review Module' : 'Start Learning'}
           </Button>
         </div>
       </div>
