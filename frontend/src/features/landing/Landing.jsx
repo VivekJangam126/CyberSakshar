@@ -92,12 +92,12 @@ const Landing = () => {
               </p>
               
               <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:gap-4">
-                <Link to="/register">
+                <Link to="/login">
                   <Button className="px-8 py-3.5 text-base font-semibold shadow-lg shadow-amber-500/25 transition-all hover:shadow-xl hover:shadow-amber-500/30">
                     {content.hero.primaryCta}
                   </Button>
                 </Link>
-                <Link to="/login">
+                <Link to="/register">
                   <Button variant="secondary" className="px-8 py-3.5 text-base font-semibold">
                     {content.hero.secondaryCta}
                   </Button>
@@ -347,12 +347,12 @@ const Landing = () => {
             <h2 className="text-4xl font-black leading-tight sm:text-5xl">{content.cta.title}</h2>
             <p className="mx-auto max-w-2xl text-lg text-slate-300">{content.cta.text}</p>
             <div className="flex flex-wrap justify-center gap-4 pt-4">
-              <Link to="/register">
+              <Link to="/login">
                 <Button className="px-10 py-4 text-lg font-bold shadow-2xl shadow-amber-500/30 transition-all hover:shadow-amber-500/40">
                   {content.cta.primary}
                 </Button>
               </Link>
-              <Link to="/login">
+              <Link to="/register">
                 <Button variant="secondary" className="px-10 py-4 text-lg font-bold">
                   {content.cta.secondary}
                 </Button>

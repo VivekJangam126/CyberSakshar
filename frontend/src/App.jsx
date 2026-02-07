@@ -4,6 +4,7 @@ import Landing from './features/landing/Landing'
 import LoadingPage from './features/landing/Loading'
 import Login from './features/auth/Login'
 import Register from './features/auth/Register'
+import Dashboard from './features/landing/Dashboard'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -26,6 +27,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   )
