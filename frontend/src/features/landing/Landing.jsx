@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../components/Button';
+import AppFooter from '../../components/AppFooter';
 import { landingContent } from './landingContent';
 
 const languages = [
@@ -363,20 +364,7 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t-2 border-slate-200 bg-white px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap gap-6 text-sm font-semibold text-slate-600">
-              {content.footer.links.map((label) => (
-                <Link key={label} to="/" className="transition-colors hover:text-slate-900">
-                  {label}
-                </Link>
-              ))}
-            </div>
-            <p className="text-sm text-slate-500">{content.footer.copyright}</p>
-          </div>
-        </div>
-      </footer>
+      <AppFooter />
     </div>
   );
 };
